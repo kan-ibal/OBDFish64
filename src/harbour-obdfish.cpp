@@ -29,14 +29,21 @@
 
 int main(int argc, char *argv[])
 {
-    QScopedPointer<QGuiApplication> app(SailfishApp::application(argc, argv));
+
+    QGuiApplication *app = SailfishApp::application(argc, argv);
     app->setApplicationVersion(QString(APP_VERSION));
+    QQuickView *view = SailfishApp::createView();
 
     qmlRegisterType<PlotWidget,1>("harbour.obdfish", 1, 0, "PlotWidget");
     qmlRegisterType<BluetoothConnection,1>("harbour.obdfish", 1, 0, "BluetoothConnection");
     qmlRegisterType<BluetoothData,1>("harbour.obdfish", 1, 0, "BluetoothData");
     qmlRegisterType<FileWriter,1>("harbour.obdfish", 1, 0, "FileWriter");
     qmlRegisterType<ProjectSettings,1>("harbour.obdfish", 1, 0, "ProjectSettings");
-    return SailfishApp::main(argc, argv);
+
+    view->setSource(SailfishApp::pathTo("qml/harbour-obdfish.qml"));
+    view->showFullScreen();
+
+    return app->exec();
+
 }
 

@@ -18,11 +18,13 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 import "pages"
-import org.nemomobile.notifications 1.0
+import Nemo.Notifications 1.0
 import harbour.obdfish 1.0
 import QtSensors 5.0 as Sensors
 import "tools"
 import "pages/OBDDataObject.js" as OBDDataObject
+
+import Nemo.KeepAlive 1.1
 
 ApplicationWindow
 {
@@ -33,7 +35,7 @@ ApplicationWindow
     property string sReceiveBuffer: "";
     property string sELMVersion: "";
     property bool bSaveDataToDebugFile: false;
-    property variant arPIDsPagesArray : [ "010d,0000,0000,0000,0000,0000", "0104,0105,010c,010d,010e,0111", "0104,0105,010c,010d,010e,0111" ]
+    property variant arPIDsPagesArray : [ "010d,010b,0111,0000,0000,0000", "0104,0105,010c,010d,010e,0111", "0104,0105,010c,010d,010e,0111" ]
     property bool bDoNotShowDTCWarning : false;
     property string sCoverValue1 : "";
     property string sCoverValue2 : "";
@@ -99,7 +101,7 @@ ApplicationWindow
 
             if (bSupported === false)
                 return false;
-        }                
+        }
 
         //Set active command bit
         bCommandRunning = true;
@@ -116,14 +118,14 @@ ApplicationWindow
         if (bSaveDataToDebugFile) id_FileWriter.vWriteData("Send: " + sCommand + "\r\n");
 
         //Send the AT command via bluetooth
-        id_BluetoothData.sendHex(sCommand);        
+        id_BluetoothData.sendHex(sCommand);
 
         return true;
     }
 
     //Data which is received via bluetooth is passed into this function
     function fncGetData(sData)
-    {        
+    {
         //WARNING: Don't trim here. ELM might send leading/trailing spaces/carriage returns.
         //They might get lost but are needed!!!
 
@@ -192,7 +194,7 @@ ApplicationWindow
         width: Math.abs(rotationSensor.angle) == 90 ? parent.height : parent.width
         Behavior on rotation { SmoothedAnimation { duration: 500 } }
         Behavior on width { SmoothedAnimation { duration: 500 } }
-    }        
+    }
 
     initialPage: Component { MainPage { } }
     cover: Qt.resolvedUrl("cover/CoverPage.qml")

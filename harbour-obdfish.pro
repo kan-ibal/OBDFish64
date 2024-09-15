@@ -53,7 +53,7 @@ HEADERS += \
     src/projectsettings.h \
     src/plotwidget.h
 
-QT += bluetooth
+QT += bluetooth sensors
 
 DISTFILES += \
     rpm/harbour-obdfish.spec \
@@ -80,3 +80,5 @@ DISTFILES += \
     qml/obd_ok.png \
     qml/obd_error.png \
     rpm/harbour-obdfish.changes
+
+LIBS += -lkeepalive

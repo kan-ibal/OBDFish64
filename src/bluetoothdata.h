@@ -10,7 +10,7 @@ class BluetoothData : public QObject
     Q_OBJECT
 public:
     explicit BluetoothData(QObject *parent = 0);
-    ~BluetoothData();    
+    ~BluetoothData();
     Q_INVOKABLE void connect(QString address, int port);
     Q_INVOKABLE void sendHex(QString sString);
     Q_INVOKABLE void disconnect();

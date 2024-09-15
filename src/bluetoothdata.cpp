@@ -8,24 +8,25 @@ BluetoothData::BluetoothData (QObject *parent):QObject(parent)
 
 BluetoothData::~BluetoothData ()
 {
-    if(this->_socket)
+    if(this->_socket){
         delete this->_socket;
+        this->_socket = 0;
+        }
 }
 
 void BluetoothData::connect(QString address, int port)
 {
     this->_port = port;
+    this->_socket = new QBluetoothSocket(QBluetoothServiceInfo::RfcommProtocol);
     qDebug("Trying to connect to: %s_%d", address.toUtf8().constData(), _port);
 
-    if(this->_socket)
-        delete this->_socket;
+//    if(this->_socket)
+//        delete this->_socket;
 
-    this->_socket = new QBluetoothSocket(QBluetoothServiceInfo::RfcommProtocol);
-
+    QObject::connect(this->_socket, SIGNAL(readyRead()), this, SLOT(readData()));
     QObject::connect(this->_socket, SIGNAL(connected()), this, SLOT(connected()));
     QObject::connect(this->_socket, SIGNAL(disconnected()), this, SLOT(disconnected()));
-    QObject::connect(this->_socket, SIGNAL(error(QBluetoothSocket::SocketError)), this, SLOT(error(QBluetoothSocket::SocketError)));
-    QObject::connect(this->_socket, SIGNAL(readyRead()), this, SLOT(readData()));
+    QObject::connect(this->_socket, SIGNAL(error(QBluetoothSocket::SocketError error)), this, SLOT(error(QBluetoothSocket::SocketError error)));
 
     qDebug("Connecting...");
     this->_socket->connectToService(QBluetoothAddress(address), this->_port);
@@ -63,7 +64,6 @@ void BluetoothData::disconnect()
         this->_socket->close();
 
     delete this->_socket;
-    this->_socket = 0;
 
     qDebug("Disconnected.");
 }
@@ -72,7 +72,7 @@ void BluetoothData::readData()
 {
     qDebug("Entering readData...");
 
-    QByteArray data = _socket->readAll();   
+    QByteArray data = _socket->readAll();
 
     qDebug() << "Data size:" << data.size();
     qDebug() << "Data[" + QString::number(_port) + "]:" << data.toHex();

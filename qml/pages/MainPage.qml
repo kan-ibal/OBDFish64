@@ -28,15 +28,15 @@ Page
     property bool bFirstPage: true
     property bool bWaitForCommandSequenceEnd: false
     property int iInit: 0
-    property int iWaitForCommand: 0   
-    property bool bBluetoothScanning: false    
+    property int iWaitForCommand: 0
+    property bool bBluetoothScanning: false
     property string sCurrentBTAddress: ""
     property string sCurrentBTName: ""
     property int iScannedDevicesCount: 0
     property int iUsedDevicesCount: 0
 
     onStatusChanged:
-    {       
+    {
         if (status === PageStatus.Active && bFirstPage)
         {
             bFirstPage = false
@@ -47,7 +47,7 @@ Page
             var sGetPIDsPage3 = id_ProjectSettings.sLoadProjectData("PIDsPage3");
             var sGetUsedAdaptersNames = id_ProjectSettings.sLoadProjectData("UsedAdaptersNames");
             var sGetUsedAdaptersAddresses = id_ProjectSettings.sLoadProjectData("UsedAdaptersAddresses");
-            var sGetSaveDataToDebugFile = id_ProjectSettings.sLoadProjectData("WriteDebugFile");            
+            var sGetSaveDataToDebugFile = id_ProjectSettings.sLoadProjectData("WriteDebugFile");
             var sGetDoNotShowDTCWarning = id_ProjectSettings.sLoadProjectData("DoNotShowDTCWarning");
 
             console.log("sGetPIDsPage1" + sGetPIDsPage1);
